@@ -56,18 +56,8 @@ window.addEventListener('load', function () {
 
     context = canvas.getContext('2d');
 
-    // Get the tool select input.
-   // var tool_select = document.getElementById('dtool');
     var tool_select = document.getElementById('pencil-button');
-   
-    //tool_select.addEventListener('change', ev_tool_change, false);
-    
-    //Choose colour picker
-    colorPicked = $("#colour-picker").val();
-    
-    $("#colour-picker").change(function(){
-        colorPicked = $("#colour-picker").val();
-    });
+  
     
     //Choose line Width
     lineWidthPicked = $("#line-Width").val();
@@ -127,9 +117,6 @@ window.addEventListener('load', function () {
         pic_tool_click(this)
     });
     
-    
-    
-    //Draw Grids
   function SketchGrid(gridSize) {
       context.clearRect(0, 0, canvas.width, canvas.height);
       
@@ -151,12 +138,6 @@ window.addEventListener('load', function () {
            gridWidth = 25;
            gridColor = "#fff";  //no grid
        }
-
-       /**
-         * i is used for both x and y to draw
-         * a line every 5 pixels starting at
-         * .5 to offset the canvas edges
-         */
          
         context.beginPath();  //important draw new everytime
         
@@ -174,17 +155,6 @@ window.addEventListener('load', function () {
 
     }
     
-    /*var SelectedGrid = $("#draw-grid").val();
-    
-    SketchGrid(SelectedGrid)  //Calling drawing grid fn
-    
-    $("#draw-grid").change(function(){
-        var SelectedGrid = $("#draw-grid").val();
-        SketchGrid(SelectedGrid)  //Calling drawing grid fn
-    });*/
-    
-    
-      // limit the number of events per second
   function throttle(callback, delay) {
     var previousCall = new Date().getTime();
     return function() {
@@ -226,9 +196,6 @@ window.addEventListener('load', function () {
     if (func) {
       func(ev);
     }
-    //Hide textbox if not equals to text tool
-
-    
   }
 
   // The event handler for any changes made to the tool selector.
@@ -237,7 +204,6 @@ window.addEventListener('load', function () {
       tool = new tools[this.value]();
     }
   }
-  
   
   // This function draws the #imageTemp canvas on top of #imageView, after which 
   // #imageTemp is cleared. This function is called each time when the user 
@@ -258,8 +224,6 @@ window.addEventListener('load', function () {
     }
   
   socket.on('copyCanvas', onCanvasTransfer);
-
-  
 
   // The drawing pencil.
   function drawPencil(x0, y0, x1, y1, color, linewidth, emit){
@@ -460,7 +424,6 @@ window.addEventListener('load', function () {
     
     socket.on('linedraw', onDrawLines);
 
-
   // The line tool.
   tools.line = function () {
     var tool = this;
@@ -493,58 +456,7 @@ window.addEventListener('load', function () {
     
   };
   
-  //The Circle tool
-  
-  //Old Circle Function
-  function old_drawCircle(x1, y1, x2, y2, color, linewidth, emit){
-       
-            context.clearRect(0, 0, canvas.width, canvas.height); 
-            
-               var radiusX = (x2 - x1) * 0.5,
-                radiusY = (y2 - y1) * 0.5,
-                centerX = x1 + radiusX,
-                centerY = y1 + radiusY,
-                step = 0.01,
-                a = step,
-                pi2 = Math.PI * 2 - step;
-            
-            context.beginPath();
-            context.moveTo(centerX + radiusX * Math.cos(0),
-                       centerY + radiusY * Math.sin(0));
-
-            for(; a < pi2; a += step) {
-                context.lineTo(centerX + radiusX * Math.cos(a),
-                           centerY + radiusY * Math.sin(a));
-            }
-            
-            context.closePath();
-        if(color)
-            context.strokeStyle = "#"+color;
-        else
-            context.strokeStyle = "#"+colorPicked; 
-        if(linewidth)
-            context.lineWidth = linewidth;
-        else
-            context.lineWidth = lineWidthPicked;  
-            context.stroke();
-        
-            
-            if (!emit) { return; }
-            var w = canvaso.width;
-            var h = canvaso.height;
-
-            socket.emit('circledraw', {
-              x1: x1 / w,
-              y1: y1 / h,
-              x2: x2 / w,
-              y2: y2 / h,
-              color: colorPicked,
-              lineThickness: lineWidthPicked
-            });
-        
-    }
-  
-  //New Circle Function
+  //Circle Function
   function drawCircle(x1, y1, x2, y2, color, linewidth, emit){
       
       context.clearRect(0, 0, canvas.width, canvas.height); 
@@ -585,10 +497,7 @@ window.addEventListener('load', function () {
               lineThickness: lineWidthPicked
             });
     
-  }
-  
-   
-    
+  } 
     function onDrawCircle(data){
         var w = canvaso.width;
         var h = canvaso.height;
@@ -641,8 +550,6 @@ window.addEventListener('load', function () {
   };
   
   //Ellipse Tool 
-  
-
   function drawEllipse(x, y, w, h, color, linewidth, emit){
       
       context.clearRect(0, 0, canvas.width, canvas.height); 
@@ -685,12 +592,9 @@ window.addEventListener('load', function () {
               h: h,
               color: colorPicked,
               lineThickness: lineWidthPicked
-            });
-    
+            }); 
   }
-  
-   
-    
+
     function onDrawEllipse(data){
         var w = canvaso.width;
         var h = canvaso.height;
@@ -698,7 +602,6 @@ window.addEventListener('load', function () {
     }
     
     socket.on('ellipsedraw', onDrawEllipse);
-
 
   // The Ellipse tool.
   tools.ellipse = function () {
@@ -740,9 +643,6 @@ window.addEventListener('load', function () {
     
   };
   
-  
-  
-  
  //Text Tool start
  
 textarea = document.createElement('textarea');
@@ -756,7 +656,6 @@ container.appendChild(textarea);
 var tmp_txt_ctn = document.createElement('div');
 tmp_txt_ctn.style.display = 'none';
 container.appendChild(tmp_txt_ctn);
-
 
 var onDrawTextBox = function(ev_x, ev_y, tool_x0, tool_y0) {
 		
@@ -791,7 +690,7 @@ function DrawText(fsize, ffamily, colorVal, textPosLeft, textPosTop, processed_l
             );
         }
         
-        img_update(); //Already emitting no need true param
+        img_update();
         
         if (!emit) { return; }
             var w = canvaso.width;
@@ -815,8 +714,6 @@ function DrawText(fsize, ffamily, colorVal, textPosLeft, textPosTop, processed_l
     }
     
     socket.on('textdraw', onTextDraw);
-    
-
 
 tools.text = function () {
     var tool = this;
@@ -891,34 +788,13 @@ tools.text = function () {
                     tmp_txt_ctn.innerHTML = '';
                 }
                 
-                /*var ta_comp_style = getComputedStyle(textarea);
-                var fs = ta_comp_style.getPropertyValue('font-size');
-                var ff = ta_comp_style.getPropertyValue('font-family');*/
                 var fs = SelectedFontSize + "px";
                 var ff = SelectedFontFamily;
-
-                /*context.font = fs + ' ' + ff;
-                context.textBaseline = 'top';
-                context.fillStyle = "#"+colorPicked;
-                 
-                for (var n = 0; n < processed_lines.length; n++) {
-                    var processed_line = processed_lines[n];
-                     
-                    context.fillText(
-                        processed_line,
-                        parseInt(textarea.style.left),
-                        parseInt(textarea.style.top) + n*parseInt(fs)
-                    );
-                }
-                
-                img_update(); */
                 
                 DrawText(fs, ff, colorPicked, textarea.style.left, textarea.style.top, processed_lines, true)
                 console.log("lines saved")
                 textarea.style.display = 'none';
                 textarea.value = '';
-                          
-            //end
                       
             tool.mousemove(ev);
             tool.started = false;
@@ -927,8 +803,6 @@ tools.text = function () {
     };
     
   };
-  
-  //Text tool end
   
   function clearAll_update(trans) {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -962,5 +836,3 @@ $("#clear-all").click(function(){
 }, false); }
 
 })();
-
-
