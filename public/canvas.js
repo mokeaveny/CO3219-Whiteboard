@@ -11,7 +11,6 @@
   var SelectedFontFamily;
   var SelectedFontSize;
   
-  
 // Keep everything in anonymous function, called on window load.
 if(window.addEventListener) {
 window.addEventListener('load', function () {
@@ -57,29 +56,6 @@ window.addEventListener('load', function () {
     context = canvas.getContext('2d');
 
     var tool_select = document.getElementById('pencil-button');
-  
-    
-    //Choose line Width
-    lineWidthPicked = $("#line-Width").val();
-        
-    $("#line-Width").change(function(){
-        lineWidthPicked = $("#line-Width").val();
-    });
-    
-    //SelectedFontFamily
-    SelectedFontFamily = $("#draw-text-font-family").val();
-    
-    $("#draw-text-font-family").change(function(){
-        SelectedFontFamily = $("#draw-text-font-family").val();
-    })
-    
-    //SelectedFontSize
-    SelectedFontSize = $("#draw-text-font-size").val();
-    
-    $("#draw-text-font-family").change(function(){
-        SelectedFontSize = $("#draw-text-font-size").val();
-    })
-    
 
     // Activate the default tool.
     if (tools[tool_default]) {
