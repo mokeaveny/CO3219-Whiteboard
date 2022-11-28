@@ -35,21 +35,19 @@
           </canvas>
         </div>
     </div>
-    
-<!-- Script files -->
-        <script src='jquery.min.js'></script>
-        <script src="bootstrap/js/bootstrap.min.js"></script>
-        <script src="jscolor/jscolor.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-		 <script src="canvas.js"></script> 
-		<!-- <script src="canvas-backup-latest-v1.js"></script> -->
-
-     <script type="text/javascript">
-      $(document).ready(function(){
-          var board_url = window.location.href;
-          $('.linkToBoard').attr("href",board_url);
-      });
-    </script>
-
 	</body>
 </html>
+    
+<!-- Script files -->
+<script src='jquery.min.js'></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="canvas.js"></script> 
+
+<!-- <script src="canvas-backup-latest-v1.js"></script> -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    var board_url = window.location.href;
+    $('.linkToBoard').attr("href",board_url);
+  });
+</script>
