@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: whiteboard
+spec:
+  selector:
+    app: whiteboard
+  ports:
+    - port: 81
+      targetPort: 3001
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whiteboard
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whiteboard
+  template:
+    metadata:
+      labels:
+        app: whiteboard
+    spec:
+      containers:
+        - name: whiteboard
+          image: whiteboard:v1
+          ports:
+            - containerPort: 3001
+          imagePullPolicy: Never

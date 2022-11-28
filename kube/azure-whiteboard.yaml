@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whiteboard
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whiteboard
+  template:
+    metadata:
+      labels:
+        app: whiteboard
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+        - name: whiteboard
+          image: whiteboardcontainerregistry.azurecr.io/whiteboard:v1
+          ports:
+          - containerPort: 3001
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whiteboard
+spec:
+  selector:
+    app: whiteboard
+  ports:
+    - port: 80
+      targetPort: 3001
+  type: LoadBalancer
