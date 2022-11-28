@@ -68,10 +68,6 @@
     current.y = e.clientY;
   }
 
-  function onColorUpdate(e){
-    current.color = e.target.className.split(' ')[1];
-  }
-
   // limit the number of events per second
   function throttle(callback, delay) {
     var previousCall = new Date().getTime();
