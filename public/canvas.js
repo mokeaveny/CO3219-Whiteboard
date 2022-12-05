@@ -640,7 +640,7 @@
           };
         };
 
-        //Clear the canvas
+        // Clear the canvas
         function clearAll_update(trans) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           contexto.clearRect(0, 0, canvaso.width, canvaso.height);
