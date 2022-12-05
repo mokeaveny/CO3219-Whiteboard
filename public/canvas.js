@@ -148,7 +148,7 @@
         // Set the area
         textarea = document.createElement("textarea");
 
-        // Pencil
+        // Draw pencil
         function drawPencil(x0, y0, x1, y1, color, linewidth, emit) {
           context.beginPath();
           context.moveTo(x0, y0);
@@ -176,6 +176,7 @@
           });
         }
 
+        // Listen to pencil socket events and update the canvas
         function onDrawingEvent(data) {
           var w = canvaso.width;
           var h = canvaso.height;
@@ -191,7 +192,7 @@
 
         socket.on("drawing", onDrawingEvent);
 
-        // Pencil tool
+        // Pencil tool events
         tools.pencil = function () {
           var tool = this;
           this.started = false;
@@ -235,7 +236,7 @@
           };
         };
 
-        // Rectangle
+        // Draw rectangle
         function drawRect(min_x, min_y, abs_x, abs_y, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           if (color) context.strokeStyle = "#" + color;
@@ -260,10 +261,10 @@
           });
         }
 
+        // Listen to rectangle socket events and update the canvas
         function onDrawRect(data) {
           var w = canvaso.width;
           var h = canvaso.height;
-          console.log("IN");
           drawRect(
             data.min_x * w,
             data.min_y * h,
@@ -276,7 +277,7 @@
 
         socket.on("rectangle", onDrawRect);
 
-        // Rectangle tool
+        // Rectangle tool events
         tools.rect = function () {
           var tool = this;
           this.started = false;
@@ -324,7 +325,7 @@
           };
         };
 
-        // Line
+        // Draw line
         function drawLines(x0, y0, x1, y1, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.beginPath();
@@ -353,6 +354,7 @@
           });
         }
 
+        // Listen to line socket events and update the canvas
         function onDrawLines(data) {
           var w = canvaso.width;
           var h = canvaso.height;
@@ -368,7 +370,7 @@
 
         socket.on("linedraw", onDrawLines);
 
-        // Line tool
+        // Line tool events
         tools.line = function () {
           var tool = this;
           this.started = false;
@@ -405,7 +407,7 @@
           };
         };
 
-        // Circle
+        // Draw circle
         function drawCircle(x1, y1, x2, y2, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -438,6 +440,8 @@
             lineThickness: lineWidthPicked,
           });
         }
+
+        // Listen to circle socket events and update the canvas
         function onDrawCircle(data) {
           var w = canvaso.width;
           var h = canvaso.height;
@@ -453,7 +457,7 @@
 
         socket.on("circledraw", onDrawCircle);
 
-        // Circle tool
+        // Circle tool events
         tools.circle = function () {
           var tool = this;
           this.started = false;
@@ -497,7 +501,7 @@
           };
         };
 
-        // Ellipse
+        // Draw ellipse
         function drawEllipse(x, y, w, h, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           var ox, oy, xe, ye, xm, ym;
@@ -539,6 +543,7 @@
           });
         }
 
+        // Listen to ellipse socket events and update the canvas
         function onDrawEllipse(data) {
           var w = canvaso.width;
           var h = canvaso.height;
@@ -554,7 +559,7 @@
 
         socket.on("ellipsedraw", onDrawEllipse);
 
-        // Ellipse tool
+        // Ellipse tool events
         tools.ellipse = function () {
           var tool = this;
           this.started = false;
@@ -605,6 +610,7 @@
           });
         }
 
+        // Listen to clear socket events and update the canvas
         function onClearAll(data) {
           clearAll_update();
         }
