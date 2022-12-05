@@ -195,7 +195,9 @@
 
         socket.on("copyCanvas", onCanvasTransfer);
 
-        // The drawing pencil.
+        textarea = document.createElement("textarea");
+
+        // Pencil
         function drawPencil(x0, y0, x1, y1, color, linewidth, emit) {
           context.beginPath();
           context.moveTo(x0, y0);
@@ -238,6 +240,7 @@
 
         socket.on("drawing", onDrawingEvent);
 
+        // Pencil tool
         tools.pencil = function () {
           var tool = this;
           this.started = false;
@@ -281,7 +284,7 @@
           };
         };
 
-        //Rect
+        // Rectangle
         function drawRect(min_x, min_y, abs_x, abs_y, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           if (color) context.strokeStyle = "#" + color;
@@ -322,14 +325,12 @@
 
         socket.on("rectangle", onDrawRect);
 
-        // The rectangle tool.
+        // Rectangle tool
         tools.rect = function () {
           var tool = this;
           this.started = false;
           textarea.style.display = "none";
           textarea.style.value = "";
-
-          //above the tool function
 
           this.mousedown = function (ev) {
             tool.started = true;
@@ -371,7 +372,8 @@
             }
           };
         };
-        //Lines
+
+        // Line
         function drawLines(x0, y0, x1, y1, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.beginPath();
@@ -415,7 +417,7 @@
 
         socket.on("linedraw", onDrawLines);
 
-        // The line tool.
+        // Line tool
         tools.line = function () {
           var tool = this;
           this.started = false;
@@ -452,7 +454,7 @@
           };
         };
 
-        //Circle Function
+        // Circle
         function drawCircle(x1, y1, x2, y2, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -500,7 +502,7 @@
 
         socket.on("circledraw", onDrawCircle);
 
-        // The Circle tool.
+        // Circle tool
         tools.circle = function () {
           var tool = this;
           this.started = false;
@@ -544,7 +546,7 @@
           };
         };
 
-        //Ellipse Tool
+        // Ellipse
         function drawEllipse(x, y, w, h, color, linewidth, emit) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           var ox, oy, xe, ye, xm, ym;
@@ -601,7 +603,7 @@
 
         socket.on("ellipsedraw", onDrawEllipse);
 
-        // The Ellipse tool.
+        // Ellipse tool
         tools.ellipse = function () {
           var tool = this;
           this.started = false;
@@ -638,181 +640,7 @@
           };
         };
 
-        //Text Tool start
-        textarea = document.createElement("textarea");
-        textarea.id = "text_tool";
-        textarea.focus();
-        textarea.className += " form-control";
-        container.appendChild(textarea);
-
-        // Text tool's text container for calculating
-        // lines/chars
-        var tmp_txt_ctn = document.createElement("div");
-        tmp_txt_ctn.style.display = "none";
-        container.appendChild(tmp_txt_ctn);
-
-        var onDrawTextBox = function (ev_x, ev_y, tool_x0, tool_y0) {
-          var x = Math.min(ev_x, tool_x0);
-          var y = Math.min(ev_y, tool_y0);
-          var width = Math.abs(ev_x - tool_x0);
-          var height = Math.abs(ev_y - tool_y0);
-
-          textarea.style.left = x + "px";
-          textarea.style.top = y + "px";
-          textarea.style.width = width + "px";
-          textarea.style.height = height + "px";
-
-          textarea.style.display = "block";
-        };
-
-        function DrawText(
-          fsize,
-          ffamily,
-          colorVal,
-          textPosLeft,
-          textPosTop,
-          processed_lines,
-          emit
-        ) {
-          context.font = fsize + " " + ffamily;
-          context.textBaseline = "top";
-          context.fillStyle = "#" + colorVal;
-
-          for (var n = 0; n < processed_lines.length; n++) {
-            var processed_line = processed_lines[n];
-
-            context.fillText(
-              processed_line,
-              parseInt(textPosLeft),
-              parseInt(textPosTop) + n * parseInt(fsize)
-            );
-          }
-
-          img_update();
-
-          if (!emit) {
-            return;
-          }
-          var w = canvaso.width;
-          var h = canvaso.height;
-
-          socket.emit("textdraw", {
-            fsize: fsize,
-            ffamily: ffamily,
-            colorVal: colorVal,
-            textPosLeft: textPosLeft,
-            textPosTop: textPosTop,
-            processed_linesArray: processed_lines,
-          });
-        }
-
-        function onTextDraw(data) {
-          var w = canvaso.width;
-          var h = canvaso.height;
-          DrawText(
-            data.fsize,
-            data.ffamily,
-            data.colorVal,
-            data.textPosLeft,
-            data.textPosTop,
-            data.processed_linesArray
-          );
-        }
-
-        socket.on("textdraw", onTextDraw);
-
-        tools.text = function () {
-          var tool = this;
-          this.started = false;
-          textarea.style.display = "none";
-          textarea.style.value = "";
-
-          this.mousedown = function (ev) {
-            tool.started = true;
-            tool.x0 = ev._x;
-            tool.y0 = ev._y;
-          };
-
-          this.mousemove = function (ev) {
-            if (!tool.started) {
-              return;
-            }
-
-            var x = Math.min(ev._x, tool.x0);
-            var y = Math.min(ev._y, tool.y0);
-            var width = Math.abs(ev._x - tool.x0);
-            var height = Math.abs(ev._y - tool.y0);
-
-            textarea.style.left = x + "px";
-            textarea.style.top = y + "px";
-            textarea.style.width = width + "px";
-            textarea.style.height = height + "px";
-
-            textarea.style.display = "block";
-            textarea.style.color = "#" + colorPicked;
-            textarea.style.font =
-              SelectedFontSize + "px" + " " + SelectedFontFamily;
-          };
-
-          this.mouseup = function (ev) {
-            if (tool.started) {
-              //start
-              var lines = textarea.value.split("\n");
-              var processed_lines = [];
-
-              for (var i = 0; i < lines.length; i++) {
-                var chars = lines[i].length;
-
-                for (var j = 0; j < chars; j++) {
-                  var text_node = document.createTextNode(lines[i][j]);
-                  tmp_txt_ctn.appendChild(text_node);
-
-                  // Since tmp_txt_ctn is not taking any space
-                  // in layout due to display: none, we gotta
-                  // make it take some space, while keeping it
-                  // hidden/invisible and then get dimensions
-                  tmp_txt_ctn.style.position = "absolute";
-                  tmp_txt_ctn.style.visibility = "hidden";
-                  tmp_txt_ctn.style.display = "block";
-
-                  var width = tmp_txt_ctn.offsetWidth;
-                  var height = tmp_txt_ctn.offsetHeight;
-
-                  tmp_txt_ctn.style.position = "";
-                  tmp_txt_ctn.style.visibility = "";
-                  tmp_txt_ctn.style.display = "none";
-
-                  if (width > parseInt(textarea.style.width)) {
-                    break;
-                  }
-                }
-
-                processed_lines.push(tmp_txt_ctn.textContent);
-                tmp_txt_ctn.innerHTML = "";
-              }
-
-              var fs = SelectedFontSize + "px";
-              var ff = SelectedFontFamily;
-
-              DrawText(
-                fs,
-                ff,
-                colorPicked,
-                textarea.style.left,
-                textarea.style.top,
-                processed_lines,
-                true
-              );
-              console.log("lines saved");
-              textarea.style.display = "none";
-              textarea.value = "";
-
-              tool.mousemove(ev);
-              tool.started = false;
-            }
-          };
-        };
-
+        //Clear the canvas
         function clearAll_update(trans) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           contexto.clearRect(0, 0, canvaso.width, canvaso.height);
