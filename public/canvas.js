@@ -94,41 +94,6 @@
             pic_tool_click(this);
           });
 
-          function SketchGrid(gridSize) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-
-            var w = canvas.width;
-            var h = canvas.height;
-            var gridWidth, gridColor;
-
-            if (gridSize == "normal") {
-              gridWidth = 25;
-              gridColor = "#e7e8e8";
-            } else if (gridSize == "medium") {
-              gridWidth = 45;
-              gridColor = "#e7e8e8";
-            } else if (gridSize == "large") {
-              gridWidth = 65;
-              gridColor = "#e7e8e8";
-            } else if (gridSize == "nogrid") {
-              gridWidth = 25;
-              gridColor = "#fff"; //no grid
-            }
-
-            context.beginPath(); //important draw new everytime
-
-            for (var i = 0.5; i < w || i < h; i += gridWidth) {
-              // draw horizontal lines
-              context.moveTo(i, 0);
-              context.lineTo(i, h);
-              // draw vertical lines
-              context.moveTo(0, i);
-              context.lineTo(w, i);
-            }
-            context.strokeStyle = gridColor;
-            context.stroke();
-          }
-
           function throttle(callback, delay) {
             var previousCall = new Date().getTime();
             return function () {
