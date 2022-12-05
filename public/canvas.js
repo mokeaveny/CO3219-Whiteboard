@@ -114,8 +114,6 @@
             // Firefox
             ev._x = ev.clientX - CanvPos.left;
             ev._y = ev.clientY - CanvPos.top;
-          } else if (ev.offsetX || ev.offsetX == 0) {
-            // Opera
           }
 
           // Call the event handler of the tool.
