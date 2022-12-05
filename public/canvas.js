@@ -166,13 +166,6 @@
           }
         }
 
-        // The event handler for any changes made to the tool selector.
-        function ev_tool_change(ev) {
-          if (tools[this.value]) {
-            tool = new tools[this.value]();
-          }
-        }
-
         // This function draws the #imageTemp canvas on top of #imageView, after which
         // #imageTemp is cleared. This function is called each time when the user
         // completes a drawing operation.
@@ -195,6 +188,7 @@
 
         socket.on("copyCanvas", onCanvasTransfer);
 
+        // Set the area
         textarea = document.createElement("textarea");
 
         // Pencil
