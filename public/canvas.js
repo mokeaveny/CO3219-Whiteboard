@@ -88,10 +88,6 @@
             pic_tool_click(this);
           });
 
-          $("#text-button").click(function () {
-            pic_tool_click(this);
-          });
-
           function throttle(callback, delay) {
             var previousCall = new Date().getTime();
             return function () {
