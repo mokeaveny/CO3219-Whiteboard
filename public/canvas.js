@@ -62,12 +62,14 @@
             tool_select.value = tool_default;
           }
 
+          // Set the tool to the selected tool
           function pic_tool_click(pick) {
             if (tools[pick.value]) {
               tool = new tools[pick.value]();
             }
           }
 
+          // Event handlers to set the selected tool based on the button clicked
           $("#pencil-button").click(function () {
             pic_tool_click(this);
           });
