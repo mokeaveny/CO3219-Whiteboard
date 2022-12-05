@@ -32,11 +32,6 @@ function onConnection(socket) {
     console.log(data);
   });
 
-  socket.on("textdraw", function (data) {
-    socket.broadcast.emit("textdraw", data);
-    console.log(data);
-  });
-
   socket.on("copyCanvas", function (data) {
     socket.broadcast.emit("copyCanvas", data);
     console.log(data);
