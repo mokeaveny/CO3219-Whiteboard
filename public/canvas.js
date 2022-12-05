@@ -7,8 +7,6 @@
   var textarea;
   var colorPicked;
   var lineWidthPicked;
-  var SelectedFontFamily;
-  var SelectedFontSize;
 
   // Keep everything in anonymous function, called on window load.
   if (window.addEventListener) {
